@@ -19,4 +19,5 @@
     OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
     PERFORMANCE OF THIS SOFTWARE.
 """
-from .dumps import *
+from .dumps import dumps
+from .loads import loads

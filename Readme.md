@@ -1,31 +1,35 @@
 # pyflatted
-A (partial) port of [flatted](https://github.com/WebReflection/flatted).
+A (partial) port of [flatted](https://github.com/WebReflection/flatted) to Python 3, which allows for dumping and parsing circular or otherwise recursive JSON-compatible structures.
 
-This was done mainly so circular JSON data can be communicated between Python and Node for one of our projects.
-
-# Current state of feature parity with flatted
-What works:
-* A basic implementation of dumps with the indent option configurable
-
-What is missing:
-* Other configurable options for dumps to be passed on
-* loads/Parsing strings
-
-Contributions are very welcome.
+This was done mainly so circular JSON data can be communicated between Python and Node for one of our earlier projects.
 
 # How does it work?
-While dumping the string, all objects, including dictionaries, lists, and strings, are flattened out and replaced as unique index. The
-
-Once parsed, all indexes will be replaced through the flattened collection.
+While dumping the string, all objects, including dictionaries, lists, and strings, are flattened out and replaced as unique index.
 
 ```python
 import pyflatted
 
 a = [{"one": 1}, {"two": '2'}]
-a[0]["a"] = a
-
-print(pyflatted.dumps(a))
+a[0]["a"] = a       # [{'one': 1, 'a': [...]}, {'two': '2'}]
+print(a)
+flatted = pyflatted.dumps(a)
+print(flatted)      # [["1", "2"], {"one": 1, "a": "0"}, {"two": "3"}, "2"]
+unflatted = pyflatted.loads(flatted)
+print(unflatted)    # [{'one': 1, 'a': [...]}, {'two': '2'}]
 ```
+
+# Current state of feature parity with flatted
+What works:
+* dumps (with Python json.dumps options passed through, incl. indent and others)
+* loads
+
+What we want to support:
+* Custom replacers and replacers for dumping and parsing respectively
+
+What we don't want to support:
+* Alternative primitives
+
+Contributions are very welcome.
 
 # License
 The MIT License. See 'License'.

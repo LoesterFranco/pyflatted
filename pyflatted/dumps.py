@@ -2,7 +2,7 @@ import json
 import copy
 import collections.abc
 
-def dumps(value, indent=4):
+def dumps(value, **kwargs):
     def fn_set(known, input, value):
         input.append(value)
         index = str(len(input) - 1)
@@ -57,7 +57,7 @@ def dumps(value, indent=4):
     while i < len(input):
         first_run[0] = True
         input_processed = iterate(input[i], replace, first_run, known, input)
-        output.append(json.dumps(input_processed, indent=indent))
+        output.append(input_processed)
         i += 1
 
-    return "[{0}]".format(','.join(output))
+    return json.dumps(output, **kwargs)
